@@ -1,0 +1,1371 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>منظّم المصاريف الشهري - ذكي وبسيط</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c1427;
+    --bg-gradient: linear-gradient(135deg, #0c1427 0%, #0f1a33 100%);
+    --card: #101b36;
+    --card-hover: #152243;
+    --accent: #10b981;
+    --accent-hover: #34d399;
+    --danger: #ef4444;
+    --danger-hover: #f87171;
+    --warning: #f59e0b;
+    --warning-hover: #fbbf24;
+    --info: #3b82f6;
+    --info-hover: #60a5fa;
+    --muted: #94a3b8;
+    --muted-light: #cbd5e1;
+    --text: #f1f5f9;
+    --text-light: #e2e8f0;
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --shadow: 0 10px 40px rgba(2, 6, 23, 0.8);
+    --shadow-light: 0 4px 20px rgba(2, 6, 23, 0.4);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --transition: all 0.3s ease;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Cairo', 'Inter', sans-serif;
+    background: var(--bg-gradient);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 1100px;
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--glass-border);
+    animation: fadeIn 0.6s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--glass-border);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--accent), #0ea5e9);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    background: linear-gradient(to right, var(--text-light), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 4px;
+  }
+
+  .stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .stat-box {
+    background: var(--card);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--glass-border);
+  }
+
+  .stat-box i {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 24px;
+  }
+
+  .card {
+    background: var(--card);
+    padding: 22px;
+    border-radius: var(--radius);
+    border: 1px solid var(--glass-border);
+    transition: var(--transition);
+  }
+
+  .card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::before {
+    content: "";
+    width: 6px;
+    height: 18px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 12px;
+    align-items: flex-end;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--muted);
+  }
+
+  input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    transition: var(--transition);
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+
+  input::placeholder {
+    color: rgba(148, 163, 184, 0.6);
+  }
+
+  .btn {
+    padding: 14px 22px;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 50px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--glass-border);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-light);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .btn-danger {
+    background: var(--danger);
+    color: white;
+  }
+
+  .btn-danger:hover {
+    background: var(--danger-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+  }
+
+  .btn-warning {
+    background: var(--warning);
+    color: white;
+  }
+
+  .btn-warning:hover {
+    background: var(--warning-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.3);
+  }
+
+  .btn-info {
+    background: var(--info);
+    color: white;
+  }
+
+  .btn-info:hover {
+    background: var(--info-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+  }
+
+  .btn-small {
+    padding: 8px 14px;
+    font-size: 13px;
+    min-height: auto;
+  }
+
+  .items-list {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+    max-height: 55vh;
+    overflow-y: auto;
+    border-radius: var(--radius-sm);
+  }
+
+  .items-list::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .items-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+
+  .items-list::-webkit-scrollbar-thumb {
+    background: var(--muted);
+    border-radius: 4px;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+    transition: var(--transition);
+    animation: slideIn 0.4s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .item:hover {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: var(--glass-border);
+  }
+
+  .item-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .item-index {
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .item-name {
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .item-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .item-price-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: left;
+  }
+
+  .item-unit-price {
+    font-size: 13px;
+    color: var(--muted);
+    direction: ltr;
+  }
+
+  .item-total-price {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 17px;
+    direction: ltr;
+  }
+
+  .item-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 12px;
+  }
+
+  .quantity-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    color: var(--text);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .quantity-btn:hover {
+    background: var(--accent);
+    color: white;
+  }
+
+  .quantity-input {
+    width: 60px;
+    text-align: center;
+    padding: 4px;
+    font-weight: 600;
+  }
+
+  .summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px;
+    border-radius: var(--radius);
+    margin-top: 20px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+  }
+
+  .total-amount {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent);
+    direction: ltr;
+  }
+
+  .total-label {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .summary-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .summary-stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .summary-stat-value {
+    font-weight: 600;
+    color: var(--text-light);
+  }
+
+  .footer-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .last-save {
+    color: var(--muted);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .last-save::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+
+  .preview-container {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 18px;
+    border-radius: var(--radius-sm);
+    border: 1px dashed var(--glass-border);
+    min-height: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .preview-empty {
+    color: var(--muted);
+    text-align: center;
+    padding: 40px 20px;
+    font-style: italic;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .tips {
+    background: rgba(16, 185, 129, 0.08);
+    border-radius: var(--radius-sm);
+    padding: 18px;
+    margin-top: 24px;
+    border: 1px solid rgba(16, 185, 129, 0.15);
+  }
+
+  .tips-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tips-list {
+    margin: 0;
+    padding-right: 18px;
+  }
+
+  .tips-list li {
+    margin-bottom: 8px;
+    font-size: 13.5px;
+    color: var(--muted-light);
+  }
+
+  .success-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--accent);
+    color: white;
+    padding: 14px 22px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 100;
+    animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.7s;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes fadeOut {
+    to { opacity: 0; transform: translateY(-20px); }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1000px) {
+    .form-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    
+    .app {
+      padding: 20px;
+    }
+    
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .stats {
+      width: 100%;
+    }
+    
+    .total-amount {
+      font-size: 28px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .tools-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .footer-controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .footer-buttons {
+      justify-content: center;
+    }
+    
+    .last-save {
+      justify-content: center;
+    }
+    
+    .item {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
+    }
+    
+    .item-content {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .item-actions {
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    
+    .quantity-controls {
+      margin-left: 0;
+    }
+    
+    .summary {
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+    }
+    
+    .summary-stats {
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    body {
+      padding: 12px;
+    }
+    
+    .app {
+      padding: 16px;
+    }
+    
+    .card {
+      padding: 18px;
+    }
+    
+    h1 {
+      font-size: 20px;
+    }
+    
+    .btn {
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+    
+    .success-notification {
+      bottom: 10px;
+      right: 10px;
+      left: 10px;
+      padding: 12px 16px;
+    }
+    
+    .item-actions {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .quantity-controls {
+      order: -1;
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="منظم المصاريف الشهري">
+    <header>
+      <div class="header-content">
+        <div class="logo">م</div>
+        <div>
+          <h1>منظّم المصاريف الشهري</h1>
+          <p class="subtitle">سجّل مصاريفك بسهولة → نظّمها → حمّل تقرير مفصل</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat-box"><i>💰</i> متابعة المصاريف</div>
+        <div class="stat-box"><i>📊</i> إحصائيات مفصّلة</div>
+        <div class="stat-box"><i>📥</i> تصدير بتنسيق TXT</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- الجزء الأيمن: القائمة والإدخال -->
+      <div class="card">
+        <div class="section-title">إضافة منتج جديد</div>
+        
+        <form id="addForm" class="form-grid">
+          <div class="input-group">
+            <label for="name">اسم المنتج</label>
+            <input id="name" type="text" placeholder="مثال: خبز، لحم، فواكه..." required />
+          </div>
+          
+          <div class="input-group">
+            <label for="price">سعر الوحدة (درهم)</label>
+            <input id="price" type="number" step="0.01" min="0" placeholder="0.00" required />
+          </div>
+          
+          <div class="input-group">
+            <label for="quantity">الكمية</label>
+            <input id="quantity" type="number" min="1" value="1" step="1" required />
+          </div>
+          
+          <div class="input-group">
+            <button type="button" id="addBtn" class="btn btn-primary" style="margin-top: 22px;">
+              <span>➕ أضف المنتج</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="section-title">قائمة المنتجات المضافة</div>
+        <ul id="list" class="items-list" aria-live="polite"></ul>
+
+        <div class="summary">
+          <div>
+            <div class="total-label">المجموع الكلي</div>
+            <div id="totalDisplay" class="total-amount">0.00</div>
+          </div>
+          <div class="summary-stats">
+            <div class="summary-stat">
+              <span>عدد المنتجات:</span>
+              <span id="count" class="summary-stat-value">0</span>
+            </div>
+            <div class="summary-stat">
+              <span>عدد العناصر:</span>
+              <span id="totalItems" class="summary-stat-value">0</span>
+            </div>
+            <div class="summary-stat">
+              <span>متوسط السعر:</span>
+              <span id="averagePrice" class="summary-stat-value">0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-controls">
+          <div class="footer-buttons">
+            <button id="exportBtn" class="btn btn-primary">
+              <span>📥 صدّر كملف TXT</span>
+            </button>
+            <button id="clearBtn" class="btn btn-danger">
+              <span>🗑️ فرّغ القائمة</span>
+            </button>
+          </div>
+          <div class="last-save" id="savedInfo">آخر حفظ: -</div>
+        </div>
+      </div>
+
+      <!-- الجزء الأيسر: المعاينة والأدوات -->
+      <div class="card">
+        <div class="section-title">معاينة الملف قبل التصدير</div>
+        <div id="preview" class="preview-container">
+          <div class="preview-empty">لم تتم إضافة أي منتجات بعد.</div>
+        </div>
+
+        <div class="section-title">أدوات التحكم</div>
+        <div class="tools-grid">
+          <button id="saveLocal" class="btn btn-secondary">
+            <span>💾 حفظ محلي</span>
+          </button>
+      
+          <button id="helpBtn" class="btn btn-secondary">
+            <span>❓ مساعدة</span>
+          </button>
+        </div>
+
+        <div class="tips">
+          <div class="tips-title">💡 نصائح لاستخدام أفضل</div>
+          <ul class="tips-list">
+            <li>يمكنك إضافة كمية لكل منتج لحساب المجموع بدقة.</li>
+            <li>البيانات تحفظ تلقائياً في متصفحك عند كل تعديل.</li>
+            <li>استخدم أزرار التحكم بجانب كل منتج لتعديل الكمية.</li>
+            <li>يمكنك تصدير التقرير كملف نصي لمشاركته أو حفظه.</li>
+            <li>الأرقام تعامل بترقيم عشري (يمكن استخدام . أو ,).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- إشعار النجاح -->
+  <div id="successNotification" class="success-notification" style="display: none;">
+    <span>✅</span>
+    <span id="notificationText">تمت العملية بنجاح!</span>
+  </div>
+
+<script>
+  // العناصر الرئيسية
+  const nameInput = document.getElementById('name');
+  const priceInput = document.getElementById('price');
+  const quantityInput = document.getElementById('quantity');
+  const addBtn = document.getElementById('addBtn');
+  const listEl = document.getElementById('list');
+  const totalDisplay = document.getElementById('totalDisplay');
+  const countEl = document.getElementById('count');
+  const totalItemsEl = document.getElementById('totalItems');
+  const averagePriceEl = document.getElementById('averagePrice');
+  const preview = document.getElementById('preview');
+  const exportBtn = document.getElementById('exportBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const saveLocalBtn = document.getElementById('saveLocal');
+  const loadLocalBtn = document.getElementById('loadLocal');
+  const importBtn = document.getElementById('importBtn');
+  const helpBtn = document.getElementById('helpBtn');
+  const savedInfo = document.getElementById('savedInfo');
+  const successNotification = document.getElementById('successNotification');
+  const notificationText = document.getElementById('notificationText');
+
+  let items = [];
+
+  // إظهار إشعار نجاح
+  function showNotification(message) {
+    notificationText.textContent = message;
+    successNotification.style.display = 'flex';
+    
+    // إعادة التشغيل للرسوم المتحركة
+    successNotification.style.animation = 'none';
+    setTimeout(() => {
+      successNotification.style.animation = 'slideUp 0.3s ease, fadeOut 0.3s ease 2.7s';
+    }, 10);
+    
+    // إخفاء الإشعار بعد 3 ثوانٍ
+    setTimeout(() => {
+      successNotification.style.display = 'none';
+    }, 3000);
+  }
+
+  // وظيفة لتحويل السعر إلى سنتات
+  function parseToCents(value) {
+    if (!value && value !== 0) return null;
+    
+    const strValue = String(value).replace(',', '.');
+    const num = parseFloat(strValue);
+    
+    if (isNaN(num) || !isFinite(num) || num < 0) return null;
+    
+    return Math.round(num * 100);
+  }
+
+  // وظيفة لتحويل السنتات إلى سلسلة نصية
+  function centsToStr(cents) {
+    return (cents / 100).toFixed(2);
+  }
+
+  // عرض العناصر
+  function render() {
+    listEl.innerHTML = '';
+    let totalCents = 0;
+    let totalItemsCount = 0;
+    
+    if (items.length === 0) {
+      const emptyMsg = document.createElement('li');
+      emptyMsg.className = 'item';
+      emptyMsg.style.justifyContent = 'center';
+      emptyMsg.style.textAlign = 'center';
+      emptyMsg.style.color = 'var(--muted)';
+      emptyMsg.style.fontStyle = 'italic';
+      emptyMsg.textContent = 'لم تتم إضافة أي منتجات بعد. ابدأ بإضافة منتج أعلاه.';
+      listEl.appendChild(emptyMsg);
+    } else {
+      items.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        totalCents += itemTotal;
+        totalItemsCount += item.quantity;
+        
+        const li = document.createElement('li');
+        li.className = 'item';
+        li.dataset.index = index;
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'item-content';
+        
+        const indexDiv = document.createElement('div');
+        indexDiv.className = 'item-index';
+        indexDiv.textContent = index + 1;
+        
+        const detailsDiv = document.createElement('div');
+        detailsDiv.className = 'item-details';
+        
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'item-name';
+        nameDiv.textContent = item.name;
+        
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'item-meta';
+        
+        const quantitySpan = document.createElement('span');
+        quantitySpan.className = 'item-quantity';
+        quantitySpan.innerHTML = `الكمية: <strong>${item.quantity}</strong>`;
+        
+        metaDiv.appendChild(quantitySpan);
+        
+        detailsDiv.appendChild(nameDiv);
+        detailsDiv.appendChild(metaDiv);
+        
+        const priceInfoDiv = document.createElement('div');
+        priceInfoDiv.className = 'item-price-info';
+        
+        const unitPriceDiv = document.createElement('div');
+        unitPriceDiv.className = 'item-unit-price';
+        unitPriceDiv.textContent = `${centsToStr(item.price)} د.م للوحدة`;
+        
+        const totalPriceDiv = document.createElement('div');
+        totalPriceDiv.className = 'item-total-price';
+        totalPriceDiv.textContent = `${centsToStr(itemTotal)} د.م`;
+        
+        priceInfoDiv.appendChild(unitPriceDiv);
+        priceInfoDiv.appendChild(totalPriceDiv);
+        
+        contentDiv.appendChild(indexDiv);
+        contentDiv.appendChild(detailsDiv);
+        contentDiv.appendChild(priceInfoDiv);
+        
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'item-actions';
+        
+        const quantityControls = document.createElement('div');
+        quantityControls.className = 'quantity-controls';
+        
+        const decreaseBtn = document.createElement('button');
+        decreaseBtn.className = 'quantity-btn';
+        decreaseBtn.textContent = '-';
+        decreaseBtn.title = 'تقليل الكمية';
+        decreaseBtn.onclick = () => updateQuantity(index, -1);
+        
+        const quantityDisplay = document.createElement('input');
+        quantityDisplay.type = 'number';
+        quantityDisplay.className = 'quantity-input';
+        quantityDisplay.value = item.quantity;
+        quantityDisplay.min = 1;
+        quantityDisplay.onchange = (e) => updateQuantity(index, 0, parseInt(e.target.value) || 1);
+        
+        const increaseBtn = document.createElement('button');
+        increaseBtn.className = 'quantity-btn';
+        increaseBtn.textContent = '+';
+        increaseBtn.title = 'زيادة الكمية';
+        increaseBtn.onclick = () => updateQuantity(index, 1);
+        
+        quantityControls.appendChild(decreaseBtn);
+        quantityControls.appendChild(quantityDisplay);
+        quantityControls.appendChild(increaseBtn);
+        
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn btn-warning btn-small';
+        editBtn.innerHTML = '✏️ تعديل';
+        editBtn.onclick = () => editItem(index);
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn-danger btn-small';
+        deleteBtn.innerHTML = '🗑️ حذف';
+        deleteBtn.onclick = () => deleteItem(index);
+        
+        actionsDiv.appendChild(quantityControls);
+        actionsDiv.appendChild(editBtn);
+        actionsDiv.appendChild(deleteBtn);
+        
+        li.appendChild(contentDiv);
+        li.appendChild(actionsDiv);
+        
+        listEl.appendChild(li);
+      });
+    }
+    
+    // تحديث الإحصائيات
+    totalDisplay.textContent = centsToStr(totalCents) + ' د.م';
+    countEl.textContent = items.length;
+    totalItemsEl.textContent = totalItemsCount;
+    
+    const averagePrice = items.length > 0 ? totalCents / items.length / 100 : 0;
+    averagePriceEl.textContent = averagePrice.toFixed(2) + ' د.م';
+    
+    updatePreview();
+  }
+
+  // تحديث الكمية
+  function updateQuantity(index, change, newValue = null) {
+    if (newValue !== null) {
+      items[index].quantity = Math.max(1, newValue);
+    } else {
+      items[index].quantity = Math.max(1, items[index].quantity + change);
+    }
+    
+    saveAuto();
+    render();
+    showNotification(`تم تحديث كمية "${items[index].name}" إلى ${items[index].quantity}`);
+  }
+
+  // تحديث المعاينة
+  function updatePreview() {
+    if (items.length === 0) {
+      preview.innerHTML = '<div class="preview-empty">لم تتم إضافة أي منتجات بعد.</div>';
+      return;
+    }
+    
+    const now = new Date();
+    const isoDate = now.toISOString();
+    const readableDate = now.toLocaleString('ar-MA');
+    
+    let txt = `=== تقرير المصاريف ===\n`;
+    txt += `تاريخ الإنشاء: ${isoDate}\n`;
+    txt += `التاريخ المقروء: ${readableDate}\n`;
+    txt += `=====================\n\n`;
+    txt += `قائمة المنتجات:\n`;
+    
+    let totalCents = 0;
+    let totalItemsCount = 0;
+    
+    items.forEach((item, index) => {
+      const itemTotal = item.price * item.quantity;
+      totalCents += itemTotal;
+      totalItemsCount += item.quantity;
+      
+      txt += `${index + 1}. ${item.name}\n`;
+      txt += `   الكمية: ${item.quantity}\n`;
+      txt += `   سعر الوحدة: ${centsToStr(item.price)} د.م\n`;
+      txt += `   الإجمالي: ${centsToStr(itemTotal)} د.م\n\n`;
+    });
+    
+    txt += `=====================\n`;
+    txt += `الإحصائيات:\n`;
+    txt += `- عدد المنتجات: ${items.length}\n`;
+    txt += `- عدد العناصر: ${totalItemsCount}\n`;
+    txt += `- المجموع الكلي: ${centsToStr(totalCents)} د.م\n`;
+    txt += `- متوسط السعر: ${(totalCents / items.length / 100).toFixed(2)} د.م\n`;
+    txt += `=====================`;
+    
+    preview.textContent = txt;
+  }
+
+  // إضافة منتج جديد
+  function addItem() {
+    const name = nameInput.value.trim();
+    const price = parseToCents(priceInput.value);
+    const quantity = parseInt(quantityInput.value) || 1;
+    
+    if (!name) {
+      showNotification('الرجاء إدخال اسم المنتج');
+      nameInput.focus();
+      return;
+    }
+    
+    if (price === null || price < 0) {
+      showNotification('الرجاء إدخال سعر صحيح (مثال: 12.50)');
+      priceInput.focus();
+      return;
+    }
+    
+    if (quantity < 1) {
+      showNotification('الرجاء إدخال كمية صحيحة');
+      quantityInput.focus();
+      return;
+    }
+    
+    items.push({ 
+      name, 
+      price, 
+      quantity
+    });
+    
+    nameInput.value = '';
+    priceInput.value = '';
+    quantityInput.value = '1';
+    
+    saveAuto();
+    render();
+    
+    showNotification(`تمت إضافة "${name}" بنجاح`);
+    nameInput.focus();
+  }
+
+  // تعديل منتج
+  function editItem(index) {
+    const item = items[index];
+    
+    const newName = prompt('تعديل اسم المنتج:', item.name);
+    if (newName === null) return;
+    
+    const newPriceRaw = prompt('تعديل السعر للوحدة (درهم):', centsToStr(item.price));
+    if (newPriceRaw === null) return;
+    
+    const newPrice = parseToCents(newPriceRaw);
+    if (newPrice === null || newPrice < 0) {
+      showNotification('الرجاء إدخال سعر صحيح');
+      return;
+    }
+    
+    const newQuantity = prompt('تعديل الكمية:', item.quantity);
+    if (newQuantity === null) return;
+    
+    const quantityNum = parseInt(newQuantity) || 1;
+    
+    items[index] = { 
+      name: newName.trim() || item.name, 
+      price: newPrice,
+      quantity: Math.max(1, quantityNum)
+    };
+    
+    saveAuto();
+    render();
+    
+    showNotification('تم تعديل المنتج بنجاح');
+  }
+
+  // حذف منتج
+  function deleteItem(index) {
+    const itemName = items[index].name;
+    if (confirm(`هل أنت متأكد من حذف "${itemName}"؟`)) {
+      items.splice(index, 1);
+      saveAuto();
+      render();
+      showNotification(`تم حذف "${itemName}" بنجاح`);
+    }
+  }
+
+  // تصدير إلى ملف نصي
+  function exportToTxt() {
+    if (items.length === 0) {
+      showNotification('لم تتم إضافة أي منتجات للتصدير');
+      return;
+    }
+    
+    const now = new Date();
+    const isoDate = now.toISOString().slice(0, 10);
+    const filename = `مصاريف_${isoDate}.txt`;
+    
+    const content = preview.textContent;
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    showNotification(`تم تصدير الملف "${filename}" بنجاح`);
+  }
+
+  // مسح القائمة
+  function clearList() {
+    if (items.length === 0) {
+      showNotification('لا توجد عناصر لحذفها');
+      return;
+    }
+    
+    if (confirm(`هل أنت متأكد من مسح جميع العناصر (${items.length} منتج)؟`)) {
+      items = [];
+      saveAuto();
+      render();
+      showNotification('تم مسح جميع العناصر بنجاح');
+    }
+  }
+
+  // الحفظ التلقائي
+  const STORAGE_KEY = 'expense_manager_v4';
+  function saveAuto() {
+    try {
+      const data = {
+        items,
+        savedAt: new Date().toISOString(),
+        version: '4.0'
+      };
+      
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      savedInfo.textContent = `آخر حفظ: ${new Date().toLocaleTimeString('ar-MA')}`;
+    } catch (error) {
+      console.error('فشل الحفظ:', error);
+    }
+  }
+
+  // تحميل البيانات المحفوظة
+  function loadFromStorage() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        showNotification('لا توجد بيانات محفوظة مسبقاً');
+        return;
+      }
+      
+      const data = JSON.parse(raw);
+      if (data && Array.isArray(data.items)) {
+        items = data.items.map(item => ({
+          name: String(item.name),
+          price: Number(item.price),
+          quantity: Number(item.quantity) || 1
+        }));
+        
+        savedInfo.textContent = `آخر حفظ: ${data.savedAt ? new Date(data.savedAt).toLocaleString('ar-MA') : '-'}`;
+        render();
+        
+        showNotification(`تم تحميل ${items.length} منتج بنجاح`);
+      } else {
+        showNotification('البيانات المحفوظة غير صالحة');
+      }
+    } catch (error) {
+      console.error('فشل التحميل:', error);
+      showNotification('حدث خطأ أثناء تحميل البيانات المحفوظة');
+    }
+  }
+
+  // استيراد البيانات
+  function importData() {
+    showNotification('ميزة استيراد البيانات قيد التطوير');
+  }
+
+  // عرض المساعدة
+  function showHelp() {
+    const helpText = `
+مميزات التطبيق:
+1. إضافة المنتجات مع الأسعار والكميات
+2. تعديل الكمية مباشرة من القائمة
+3. حفظ البيانات تلقائياً في المتصفح
+4. تصدير البيانات كملف نصي مفصل
+5. واجهة مستخدم متجاوبة مع جميع الشاشات
+6. إشعارات مرئية بدل النوافذ المنبثقة
+
+طريقة الاستخدام:
+- أدخل اسم المنتج وسعره وكميته
+- انقر على "أضف المنتج للقائمة"
+- استخدم أزرار التحكم لتعديل الكمية
+- استخدم أزرار التعديل والحذف لإدارة القائمة
+- احفظ البيانات محلياً أو صدّرها كملف نصي
+
+نصائح:
+- يمكنك استخدام الأرقام العربية أو الإنجليزية
+- البيانات تحفظ تلقائياً عند أي تغيير
+- يمكنك استعادة البيانات المحفوظة في أي وقت
+- استخدم تصدير TXT لنسخ احتياطي
+    `;
+    
+    alert(helpText.trim());
+  }
+
+  // تعيين الأحداث
+  addBtn.addEventListener('click', addItem);
+  exportBtn.addEventListener('click', exportToTxt);
+  clearBtn.addEventListener('click', clearList);
+  saveLocalBtn.addEventListener('click', () => {
+    saveAuto();
+    showNotification('تم حفظ البيانات محلياً بنجاح');
+  });
+  loadLocalBtn.addEventListener('click', loadFromStorage);
+  importBtn.addEventListener('click', importData);
+  helpBtn.addEventListener('click', showHelp);
+
+  // السماح بإضافة العناصر بالضغط على زر Enter
+  nameInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      priceInput.focus();
+    }
+  });
+  
+  priceInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      quantityInput.focus();
+    }
+  });
+  
+  quantityInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addItem();
+    }
+  });
+
+  // تحميل البيانات عند بدء التشغيل
+  function init() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const data = JSON.parse(raw);
+        if (data && Array.isArray(data.items)) {
+          items = data.items.map(item => ({
+            name: String(item.name),
+            price: Number(item.price),
+            quantity: Number(item.quantity) || 1
+          }));
+          
+          savedInfo.textContent = `آخر حفظ: ${data.savedAt ? new Date(data.savedAt).toLocaleString('ar-MA') : '-'}`;
+        }
+      }
+    } catch (error) {
+      console.error('خطأ في تحميل البيانات الأولية:', error);
+    }
+    
+    render();
+    nameInput.focus();
+  }
+
+  // بدء التطبيق
+  init();
+</script>
+</body>
+</html>
