@@ -801,9 +801,9 @@ input[type="number"]::-webkit-outer-spin-button {
   <div class="app" role="application" aria-label="منظم المصاريف الشهري">
     <header>
       <div class="header-content">
-        <div class="logo">🛒</div>
+        <div class="logo">ت</div>
         <div>
-          <h1>Tqadyati</h1>
+          <h1>تقدياتي</h1>
           <p class="subtitle">سجّل مصاريفك بسهولة → نظّمها → حمّل تقرير TXT مفصّل</p>
         </div>
       </div>
@@ -899,13 +899,7 @@ input[type="number"]::-webkit-outer-spin-button {
           <div class="preview-empty">لم تتم إضافة أي منتجات بعد.</div>
         </div>
 
-        <div class="section-title">أدوات التحكم</div>
-        <div class="tools-grid">
-          <button id="saveLocal" class="btn btn-secondary">
-            <span>💾 حفظ محلي</span>
-          </button>
-
-        </div>
+      
 
         <div class="tips">
           <div class="tips-title">💡 نصائح لاستخدام أفضل</div>
@@ -926,7 +920,6 @@ input[type="number"]::-webkit-outer-spin-button {
     <span>✅</span>
     <span id="notificationText">تمت العملية بنجاح!</span>
   </div>
-
 <script>
   // العناصر الرئيسية
   const nameInput = document.getElementById('name');
@@ -942,13 +935,10 @@ input[type="number"]::-webkit-outer-spin-button {
   const exportTxtBtn = document.getElementById('exportTxtBtn');
   const clearBtn = document.getElementById('clearBtn');
   const saveLocalBtn = document.getElementById('saveLocal');
-  const loadLocalBtn = document.getElementById('loadLocal');
   const savedInfo = document.getElementById('savedInfo');
   const successNotification = document.getElementById('successNotification');
   const notificationText = document.getElementById('notificationText');
-  const qtyIncreaseBtn = document.querySelector('.qty-increase');
-  const qtyDecreaseBtn = document.querySelector('.qty-decrease');
-
+  
   let items = [];
 
   // إظهار إشعار نجاح
@@ -983,13 +973,13 @@ input[type="number"]::-webkit-outer-spin-button {
     return (cents / 100).toFixed(2);
   }
 
-  // زيادة الكمية
+  // زيادة الكمية في نموذج الإضافة
   function increaseQuantity() {
     let value = parseInt(quantityInput.value) || 1;
     quantityInput.value = value + 1;
   }
 
-  // تقليل الكمية
+  // تقليل الكمية في نموذج الإضافة
   function decreaseQuantity() {
     let value = parseInt(quantityInput.value) || 1;
     if (value > 1) {
@@ -1354,65 +1344,73 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 
   // تعيين الأحداث
-  addBtn.addEventListener('click', addItem);
-  exportTxtBtn.addEventListener('click', exportToTxt);
-  clearBtn.addEventListener('click', clearList);
-  saveLocalBtn.addEventListener('click', () => {
-    saveAuto();
-    showNotification('تم حفظ البيانات محلياً بنجاح');
-  });
-  loadLocalBtn.addEventListener('click', loadFromStorage);
-  qtyIncreaseBtn.addEventListener('click', increaseQuantity);
-  qtyDecreaseBtn.addEventListener('click', decreaseQuantity);
-
-  // السماح بإضافة العناصر بالضغط على زر Enter
-  nameInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      priceInput.focus();
+  function setupEventListeners() {
+    // أزرار نموذج الإضافة
+    addBtn.addEventListener('click', addItem);
+    
+    // أزرار الزيادة والنقصان في نموذج الإضافة
+    const qtyIncreaseBtn = document.querySelector('.qty-increase');
+    const qtyDecreaseBtn = document.querySelector('.qty-decrease');
+    
+    if (qtyIncreaseBtn) {
+      qtyIncreaseBtn.addEventListener('click', increaseQuantity);
     }
-  });
-  
-  priceInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      quantityInput.focus();
+    
+    if (qtyDecreaseBtn) {
+      qtyDecreaseBtn.addEventListener('click', decreaseQuantity);
     }
-  });
-  
-  quantityInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      addItem();
-    }
-  });
+    
+    // أزرار التحكم الأخرى
+    exportTxtBtn.addEventListener('click', exportToTxt);
+    clearBtn.addEventListener('click', clearList);
+    saveLocalBtn.addEventListener('click', () => {
+      saveAuto();
+      showNotification('تم حفظ البيانات محلياً بنجاح');
+    });
+    loadLocalBtn.addEventListener('click', loadFromStorage);
+    
+    // السماح بإضافة العناصر بالضغط على زر Enter
+    nameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        priceInput.focus();
+      }
+    });
+    
+    priceInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        quantityInput.focus();
+      }
+    });
+    
+    quantityInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addItem();
+      }
+    });
+  }
 
   // تحميل البيانات عند بدء التشغيل
   function init() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const data = JSON.parse(raw);
-        if (data && Array.isArray(data.items)) {
-          items = data.items.map(item => ({
-            name: String(item.name),
-            price: Number(item.price),
-            quantity: Number(item.quantity) || 1
-          }));
-          
-          savedInfo.textContent = `آخر حفظ: ${data.savedAt ? new Date(data.savedAt).toLocaleString('ar-MA') : '-'}`;
-        }
-      }
-    } catch (error) {
-      console.error('خطأ في تحميل البيانات الأولية:', error);
-    }
+
+    // إعداد مستمعي الأحداث
+    setupEventListeners();
     
+    // التصيير الأولي
     render();
+    
+    // التركيز على حقل الاسم
     nameInput.focus();
   }
 
-  // بدء التطبيق
-  init();
+  // بدء التطبيق عند تحميل الصفحة
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 </script>
 </body>
 </html>
