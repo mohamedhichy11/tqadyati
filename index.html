@@ -3,8 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>منظّم المصاريف الشهري - ذكي وبسيط</title>
+<title>Tqadyati</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" type="image/x-icon" href="1.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="1.ico">
+<link rel="icon" type="image/png" sizes="512x512" href="1.ico">
+
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -52,6 +56,11 @@
     line-height: 1.6;
     overflow-x: hidden;
   }
+  input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
   .app {
     width: 100%;
@@ -176,7 +185,7 @@
 
   .form-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1.5fr 1fr;
     gap: 12px;
     align-items: flex-end;
   }
@@ -194,6 +203,43 @@
     color: var(--muted);
   }
 
+  .quantity-control {
+    display: flex;
+    width: 100%;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .quantity-control:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+
+  .qty-btn {
+    width: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    color: var(--text);
+    font-size: 20px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .qty-btn:hover {
+    background: var(--accent);
+    color: white;
+  }
+
+  .qty-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
   input {
     width: 100%;
     padding: 14px 16px;
@@ -204,6 +250,20 @@
     font-family: 'Cairo', sans-serif;
     font-size: 15px;
     transition: var(--transition);
+  }
+
+  .quantity-control input {
+    flex: 1;
+    border: none;
+    border-radius: 0;
+    text-align: center;
+    font-weight: 600;
+    padding: 14px 8px;
+  }
+
+  .quantity-control input:focus {
+    outline: none;
+    box-shadow: none;
   }
 
   input:focus {
@@ -741,10 +801,10 @@
   <div class="app" role="application" aria-label="منظم المصاريف الشهري">
     <header>
       <div class="header-content">
-        <div class="logo">م</div>
+        <div class="logo">🛒</div>
         <div>
-          <h1>منظّم المصاريف الشهري</h1>
-          <p class="subtitle">سجّل مصاريفك بسهولة → نظّمها → حمّل تقرير مفصل</p>
+          <h1>Tqadyati</h1>
+          <p class="subtitle">سجّل مصاريفك بسهولة → نظّمها → حمّل تقرير TXT مفصّل</p>
         </div>
       </div>
       <div class="stats">
@@ -772,7 +832,20 @@
           
           <div class="input-group">
             <label for="quantity">الكمية</label>
-            <input id="quantity" type="number" min="1" value="1" step="1" required />
+            <div class="quantity-control">
+              <button type="button" class="qty-btn qty-decrease" aria-label="تقليل الكمية">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+              <input id="quantity" type="number" min="1" value="1" step="1" required />
+              <button type="button" class="qty-btn qty-increase" aria-label="زيادة الكمية">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
           </div>
           
           <div class="input-group">
@@ -808,7 +881,7 @@
 
         <div class="footer-controls">
           <div class="footer-buttons">
-            <button id="exportBtn" class="btn btn-primary">
+            <button id="exportTxtBtn" class="btn btn-primary">
               <span>📥 صدّر كملف TXT</span>
             </button>
             <button id="clearBtn" class="btn btn-danger">
@@ -831,10 +904,7 @@
           <button id="saveLocal" class="btn btn-secondary">
             <span>💾 حفظ محلي</span>
           </button>
-      
-          <button id="helpBtn" class="btn btn-secondary">
-            <span>❓ مساعدة</span>
-          </button>
+
         </div>
 
         <div class="tips">
@@ -869,15 +939,15 @@
   const totalItemsEl = document.getElementById('totalItems');
   const averagePriceEl = document.getElementById('averagePrice');
   const preview = document.getElementById('preview');
-  const exportBtn = document.getElementById('exportBtn');
+  const exportTxtBtn = document.getElementById('exportTxtBtn');
   const clearBtn = document.getElementById('clearBtn');
   const saveLocalBtn = document.getElementById('saveLocal');
   const loadLocalBtn = document.getElementById('loadLocal');
-  const importBtn = document.getElementById('importBtn');
-  const helpBtn = document.getElementById('helpBtn');
   const savedInfo = document.getElementById('savedInfo');
   const successNotification = document.getElementById('successNotification');
   const notificationText = document.getElementById('notificationText');
+  const qtyIncreaseBtn = document.querySelector('.qty-increase');
+  const qtyDecreaseBtn = document.querySelector('.qty-decrease');
 
   let items = [];
 
@@ -886,13 +956,11 @@
     notificationText.textContent = message;
     successNotification.style.display = 'flex';
     
-    // إعادة التشغيل للرسوم المتحركة
     successNotification.style.animation = 'none';
     setTimeout(() => {
       successNotification.style.animation = 'slideUp 0.3s ease, fadeOut 0.3s ease 2.7s';
     }, 10);
     
-    // إخفاء الإشعار بعد 3 ثوانٍ
     setTimeout(() => {
       successNotification.style.display = 'none';
     }, 3000);
@@ -913,6 +981,20 @@
   // وظيفة لتحويل السنتات إلى سلسلة نصية
   function centsToStr(cents) {
     return (cents / 100).toFixed(2);
+  }
+
+  // زيادة الكمية
+  function increaseQuantity() {
+    let value = parseInt(quantityInput.value) || 1;
+    quantityInput.value = value + 1;
+  }
+
+  // تقليل الكمية
+  function decreaseQuantity() {
+    let value = parseInt(quantityInput.value) || 1;
+    if (value > 1) {
+      quantityInput.value = value - 1;
+    }
   }
 
   // عرض العناصر
@@ -1070,7 +1152,6 @@
     const readableDate = now.toLocaleString('ar-MA');
     
     let txt = `=== تقرير المصاريف ===\n`;
-    txt += `تاريخ الإنشاء: ${isoDate}\n`;
     txt += `التاريخ المقروء: ${readableDate}\n`;
     txt += `=====================\n\n`;
     txt += `قائمة المنتجات:\n`;
@@ -1094,7 +1175,6 @@
     txt += `- عدد المنتجات: ${items.length}\n`;
     txt += `- عدد العناصر: ${totalItemsCount}\n`;
     txt += `- المجموع الكلي: ${centsToStr(totalCents)} د.م\n`;
-    txt += `- متوسط السعر: ${(totalCents / items.length / 100).toFixed(2)} د.م\n`;
     txt += `=====================`;
     
     preview.textContent = txt;
@@ -1227,13 +1307,13 @@
   }
 
   // الحفظ التلقائي
-  const STORAGE_KEY = 'expense_manager_v4';
+  const STORAGE_KEY = 'expense_manager_txt_v1';
   function saveAuto() {
     try {
       const data = {
         items,
         savedAt: new Date().toISOString(),
-        version: '4.0'
+        version: '1.0'
       };
       
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -1273,50 +1353,17 @@
     }
   }
 
-  // استيراد البيانات
-  function importData() {
-    showNotification('ميزة استيراد البيانات قيد التطوير');
-  }
-
-  // عرض المساعدة
-  function showHelp() {
-    const helpText = `
-مميزات التطبيق:
-1. إضافة المنتجات مع الأسعار والكميات
-2. تعديل الكمية مباشرة من القائمة
-3. حفظ البيانات تلقائياً في المتصفح
-4. تصدير البيانات كملف نصي مفصل
-5. واجهة مستخدم متجاوبة مع جميع الشاشات
-6. إشعارات مرئية بدل النوافذ المنبثقة
-
-طريقة الاستخدام:
-- أدخل اسم المنتج وسعره وكميته
-- انقر على "أضف المنتج للقائمة"
-- استخدم أزرار التحكم لتعديل الكمية
-- استخدم أزرار التعديل والحذف لإدارة القائمة
-- احفظ البيانات محلياً أو صدّرها كملف نصي
-
-نصائح:
-- يمكنك استخدام الأرقام العربية أو الإنجليزية
-- البيانات تحفظ تلقائياً عند أي تغيير
-- يمكنك استعادة البيانات المحفوظة في أي وقت
-- استخدم تصدير TXT لنسخ احتياطي
-    `;
-    
-    alert(helpText.trim());
-  }
-
   // تعيين الأحداث
   addBtn.addEventListener('click', addItem);
-  exportBtn.addEventListener('click', exportToTxt);
+  exportTxtBtn.addEventListener('click', exportToTxt);
   clearBtn.addEventListener('click', clearList);
   saveLocalBtn.addEventListener('click', () => {
     saveAuto();
     showNotification('تم حفظ البيانات محلياً بنجاح');
   });
   loadLocalBtn.addEventListener('click', loadFromStorage);
-  importBtn.addEventListener('click', importData);
-  helpBtn.addEventListener('click', showHelp);
+  qtyIncreaseBtn.addEventListener('click', increaseQuantity);
+  qtyDecreaseBtn.addEventListener('click', decreaseQuantity);
 
   // السماح بإضافة العناصر بالضغط على زر Enter
   nameInput.addEventListener('keydown', (e) => {
