@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Tqadyati</title>
+<title>تقدياتي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="icon" type="image/x-icon" href="1.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="1.ico">
@@ -888,7 +888,6 @@ input[type="number"]::-webkit-outer-spin-button {
               <span>🗑️ فرّغ القائمة</span>
             </button>
           </div>
-          <div class="last-save" id="savedInfo">آخر حفظ: -</div>
         </div>
       </div>
 
@@ -899,16 +898,14 @@ input[type="number"]::-webkit-outer-spin-button {
           <div class="preview-empty">لم تتم إضافة أي منتجات بعد.</div>
         </div>
 
-      
-
         <div class="tips">
           <div class="tips-title">💡 نصائح لاستخدام أفضل</div>
           <ul class="tips-list">
             <li>يمكنك إضافة كمية لكل منتج لحساب المجموع بدقة.</li>
-            <li>البيانات تحفظ تلقائياً في متصفحك عند كل تعديل.</li>
             <li>استخدم أزرار التحكم بجانب كل منتج لتعديل الكمية.</li>
             <li>يمكنك تصدير التقرير كملف نصي لمشاركته أو حفظه.</li>
             <li>الأرقام تعامل بترقيم عشري (يمكن استخدام . أو ,).</li>
+            <li>البيانات ستفقد عند تحديث الصفحة.</li>
           </ul>
         </div>
       </div>
@@ -934,8 +931,6 @@ input[type="number"]::-webkit-outer-spin-button {
   const preview = document.getElementById('preview');
   const exportTxtBtn = document.getElementById('exportTxtBtn');
   const clearBtn = document.getElementById('clearBtn');
-  const saveLocalBtn = document.getElementById('saveLocal');
-  const savedInfo = document.getElementById('savedInfo');
   const successNotification = document.getElementById('successNotification');
   const notificationText = document.getElementById('notificationText');
   
@@ -1125,7 +1120,6 @@ input[type="number"]::-webkit-outer-spin-button {
       items[index].quantity = Math.max(1, items[index].quantity + change);
     }
     
-    saveAuto();
     render();
     showNotification(`تم تحديث كمية "${items[index].name}" إلى ${items[index].quantity}`);
   }
@@ -1204,7 +1198,6 @@ input[type="number"]::-webkit-outer-spin-button {
     priceInput.value = '';
     quantityInput.value = '1';
     
-    saveAuto();
     render();
     
     showNotification(`تمت إضافة "${name}" بنجاح`);
@@ -1238,7 +1231,6 @@ input[type="number"]::-webkit-outer-spin-button {
       quantity: Math.max(1, quantityNum)
     };
     
-    saveAuto();
     render();
     
     showNotification('تم تعديل المنتج بنجاح');
@@ -1249,7 +1241,6 @@ input[type="number"]::-webkit-outer-spin-button {
     const itemName = items[index].name;
     if (confirm(`هل أنت متأكد من حذف "${itemName}"؟`)) {
       items.splice(index, 1);
-      saveAuto();
       render();
       showNotification(`تم حذف "${itemName}" بنجاح`);
     }
@@ -1290,56 +1281,8 @@ input[type="number"]::-webkit-outer-spin-button {
     
     if (confirm(`هل أنت متأكد من مسح جميع العناصر (${items.length} منتج)؟`)) {
       items = [];
-      saveAuto();
       render();
       showNotification('تم مسح جميع العناصر بنجاح');
-    }
-  }
-
-  // الحفظ التلقائي
-  const STORAGE_KEY = 'expense_manager_txt_v1';
-  function saveAuto() {
-    try {
-      const data = {
-        items,
-        savedAt: new Date().toISOString(),
-        version: '1.0'
-      };
-      
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      savedInfo.textContent = `آخر حفظ: ${new Date().toLocaleTimeString('ar-MA')}`;
-    } catch (error) {
-      console.error('فشل الحفظ:', error);
-    }
-  }
-
-  // تحميل البيانات المحفوظة
-  function loadFromStorage() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) {
-        showNotification('لا توجد بيانات محفوظة مسبقاً');
-        return;
-      }
-      
-      const data = JSON.parse(raw);
-      if (data && Array.isArray(data.items)) {
-        items = data.items.map(item => ({
-          name: String(item.name),
-          price: Number(item.price),
-          quantity: Number(item.quantity) || 1
-        }));
-        
-        savedInfo.textContent = `آخر حفظ: ${data.savedAt ? new Date(data.savedAt).toLocaleString('ar-MA') : '-'}`;
-        render();
-        
-        showNotification(`تم تحميل ${items.length} منتج بنجاح`);
-      } else {
-        showNotification('البيانات المحفوظة غير صالحة');
-      }
-    } catch (error) {
-      console.error('فشل التحميل:', error);
-      showNotification('حدث خطأ أثناء تحميل البيانات المحفوظة');
     }
   }
 
@@ -1363,11 +1306,6 @@ input[type="number"]::-webkit-outer-spin-button {
     // أزرار التحكم الأخرى
     exportTxtBtn.addEventListener('click', exportToTxt);
     clearBtn.addEventListener('click', clearList);
-    saveLocalBtn.addEventListener('click', () => {
-      saveAuto();
-      showNotification('تم حفظ البيانات محلياً بنجاح');
-    });
-    loadLocalBtn.addEventListener('click', loadFromStorage);
     
     // السماح بإضافة العناصر بالضغط على زر Enter
     nameInput.addEventListener('keydown', (e) => {
@@ -1392,16 +1330,10 @@ input[type="number"]::-webkit-outer-spin-button {
     });
   }
 
-  // تحميل البيانات عند بدء التشغيل
+  // التصيير الأولي
   function init() {
-
-    // إعداد مستمعي الأحداث
     setupEventListeners();
-    
-    // التصيير الأولي
     render();
-    
-    // التركيز على حقل الاسم
     nameInput.focus();
   }
 
